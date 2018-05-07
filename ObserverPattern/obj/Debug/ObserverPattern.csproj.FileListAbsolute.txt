@@ -1,1 +1,0 @@
-C:\Users\Woody\Desktop\Study\ObserverPattern\ObserverPattern\ObserverPattern\bin\Debug\ObserverPattern.exe.config
