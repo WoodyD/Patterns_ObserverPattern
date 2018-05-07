@@ -8,18 +8,19 @@ namespace Patterns_ObserverPattern {
 		
 		static void Main(string[] args) {
 
-			IAgregator agregator = new NewsAgregator();
-			IObserver ch1Widget = new Chanel1Widget(agregator);
-			IObserver ch2Widget = new Chanel2Widget(agregator);
+			NewsAgregator agregator = new NewsAgregator();
+			Chanel1Widget ch1Widget = new Chanel1Widget();
+			Chanel2Widget ch2Widget = new Chanel2Widget();
 
-			agregator.NotifyObservers();
+			agregator.OnNewsUpdate += ch1Widget.Update;
+			agregator.OnNewsUpdate += ch2Widget.Update;
 
-			//agregator.RemoveObserver(ch1Widget);
-			// or
-			ch2Widget.RemoveFromAgregator();
+			agregator.NewNewsAwailable();
 
-			agregator.NotifyObservers();
-			
+			agregator.OnNewsUpdate -= ch1Widget.Update;
+
+			agregator.NewNewsAwailable ();
+
 			Console.ReadLine();
 			
 		}

@@ -3,36 +3,38 @@ using System.Collections.Generic;
 using Patterns_ObserverPattern.Widgets;
 
 namespace Patterns_ObserverPattern.Agregator {
-	
-	public class NewsAgregator : IAgregator{
 
-		List<IObserver> _observers;
+	public class NewsEventsArgs {
+
+		public string Chanel1News { get; private set; }
+		public string Chanel2News { get; private set; }
+
+		public NewsEventsArgs (string ch1News, string ch2News) {
+			Chanel1News = ch1News;
+			Chanel2News = ch2News;
+		}
+	}
+
+	public delegate void NewsChangetEventHandler (object sender, NewsEventsArgs e);
+
+	public class NewsAgregator{
+
+		public event NewsChangetEventHandler OnNewsUpdate;
+
 		Random _rnd;
 		
 		public NewsAgregator() {
 			_rnd = new Random();
-			_observers = new List<IObserver>();
-		}
-
-		public void AddObserver(IObserver observer) {
-			_observers.Add(observer);
-		}
-
-		public void RemoveObserver(IObserver observer) {
-			_observers.Remove(observer);
-		}
-		
-		public void NotifyObservers() {
-			string chanel1News = GetChanel1News();
-			string chanel2News = GetChanel2News();
-
-			for (int i = 0; i < _observers.Count; i++)
-				_observers[i].Update(chanel1News, chanel2News);
-			
 		}
 		
 		public void NewNewsAwailable(){
-			NotifyObservers();
+			string chanel1News = GetChanel1News ();
+			string chanel2News = GetChanel2News ();
+
+			//if (OnNewsUpdate != null)
+			//	OnNewsUpdate (this, new NewsEventsArgs(chanel1News, chanel2News));
+			// best way
+			OnNewsUpdate?.Invoke (this, new NewsEventsArgs (chanel1News, chanel2News));
 		}
 		
 		private string GetChanel1News(){
